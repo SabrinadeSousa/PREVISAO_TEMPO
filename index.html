@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Previsão</title>
+        
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script> <!-- Link Retirado deste site> https://developers.google.com/speed/libraries?hl=pt-br -->
+            <script>
+                $(document).ready(function(){
+        
+                    $("#buscar").on('click',function(){     
+                        var cidade = $('#cidade').val(); 
+                        var pais = $('#pais').val();                 
+                
+                        $.ajax({
+                            url:'https://api.openweathermap.org/data/2.5/weather?q=' + cidade + ","+ pais + '&APPID=02f8a3b8c31d4fa0ca09fcf5871e10fa',
+                            dataType:'json',
+                            method: 'get',
+                            success: function(response){
+                                console.log(response);
+                                var tempC = response.main.temp - 273.15
+                                var senC = response.main.feels_like -273.15
+
+                                $('#temperatura').html("Temperatura: " + tempC);
+                                $('#sensacao').html("Sensação Termica: " + senC);
+                                $('#humidade').html("Humidade: " + response.main.humidity);
+                                console.log(response);
+                            },
+                            error : function(error){
+                                console.log(error);
+                            }
+                        });
+
+                    });
+                });
+        
+                </script>
+        </head>
+        
+        <body>
+            Cidade: <br> <input type="text" id="cidade"><br>
+            País: <br><input type="text" id="pais"><br><br>
+            <button type="button" id="buscar">Buscar</button>
+            <p id="temperatura"></p>
+            <p id="sensacao"></p>
+            <p id="humidade"></p>
+        </body>
+    </html>
